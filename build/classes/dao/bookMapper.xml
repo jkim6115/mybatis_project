@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="book">
+	<select id="list" resultType="dto.BookDTO">
+		SELECT * FROM book
+		ORDER BY num
+	</select>
+	
+	<insert id="bookInsert" parameterType="dto.BookDTO">
+		INSERT INTO book(num, title, author, publisher, publisher_date, price)
+		VALUES(book_num_pk.nextval, #{title}, #{author}, #{publisher}, #{publisher_date}, #{price})
+	</insert>
+	
+	<update id="bookUpdate" parameterType="java.util.HashMap">
+		UPDATE book 
+		<set>
+			<if test="title != null">
+				title=#{title}
+			</if>
+			<if test="author != null">
+				author=#{author}
+			</if>
+			<if test="publisher != null">
+				publisher=#{publisher}
+			</if>
+			<if test="publisher_date != null">
+				publisher_date=#{publisher_date}
+			</if>
+			<if test="price != null">
+				price=#{price}
+			</if>	
+		</set> 
+		WHERE num=#{num}
+	</update>
+	
+	<delete id="bookDelete" parameterType="int">
+		DELETE FROM book WHERE num=#{num}
+	</delete>
+	
+	<select id="bookSearch" parameterType="string" resultType="dto.BookDTO">
+		SELECT * FROM book
+		WHERE title LIKE '%' || #{data} || '%'
+	</select>
+</mapper>
